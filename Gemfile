@@ -54,6 +54,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'annotate', '~> 3.2.0'
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
+  gem 'pry'
   gem 'rubocop', '~> 1.60.0'
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
