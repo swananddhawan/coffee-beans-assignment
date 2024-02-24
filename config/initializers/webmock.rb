@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Style/BlockDelimiters
 
 require 'webmock'
@@ -10,6 +11,29 @@ ITERABLE_API_KEY = 'iterable_api_key'
 ITERABLE_MANDATORY_HEADERS = {
   'X-Api-Key' => ITERABLE_API_KEY
 }.freeze
+
+def contain_mandatory_keys?(body, optional_and_mandatory_keys)
+  mandatory_keys = optional_and_mandatory_keys[:keys][:mandatory]
+  mandatory_keys.all? { |mandatory_key| body.key?(mandatory_key) }
+end
+
+def contain_valid_keys?(body, optional_and_mandatory_keys)
+  optional_keys = optional_and_mandatory_keys[:keys][:optional]
+  mandatory_keys = optional_and_mandatory_keys[:keys][:mandatory]
+
+  all_keys = optional_keys + mandatory_keys
+  (body.keys - all_keys).blank?
+end
+
+def contain_api_key_in_headers?(headers)
+  ITERABLE_MANDATORY_HEADERS.all? { |k, v| headers.key?(k) && headers[k] == v }
+end
+
+################################################################################
+
+###############
+# TRACK_EVENT #
+###############
 
 track_event = {
   keys: {
@@ -49,27 +73,6 @@ track_event = {
     }
   }
 }.freeze
-
-def contain_mandatory_keys?(body, optional_and_mandatory_keys)
-  mandatory_keys = optional_and_mandatory_keys[:keys][:mandatory]
-  mandatory_keys.all? { |mandatory_key| body.key?(mandatory_key) }
-end
-
-def contain_valid_keys?(body, optional_and_mandatory_keys)
-  optional_keys = optional_and_mandatory_keys[:keys][:optional]
-  mandatory_keys = optional_and_mandatory_keys[:keys][:mandatory]
-
-  all_keys = optional_keys + mandatory_keys
-  (body.keys - all_keys).blank?
-end
-
-def contain_api_key_in_headers?(headers)
-  ITERABLE_MANDATORY_HEADERS.all? { |k, v| headers.key?(k) && headers[k] == v }
-end
-
-###############
-# TRACK_EVENT #
-###############
 
 # Track event: success
 WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track").with { |request|
