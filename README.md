@@ -1,3 +1,6 @@
+# Assumptions
+1. API will always send a non-empty JSON request body to iterable.com.
+
 # README
 
 This README would normally document whatever steps are necessary to get the
