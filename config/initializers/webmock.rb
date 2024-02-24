@@ -100,4 +100,77 @@ WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track")
        .with { |request| !contain_api_key_in_headers?(request.headers) }
        .to_return(track_event[:responses][:invalid_api_key])
 
+################################################################################
+
+#########
+# USERS #
+#########
+
+create_or_update_user = {
+  keys: {
+    mandatory: %w[userId dataFields],
+    optional: %w[preferUserId mergeNestedObjects createNewFields]
+  },
+  responses: {
+    success: {
+      status: 200,
+      body: {
+        msg: '',
+        code: 'Success',
+        params: nil
+      }.to_json
+    },
+    invalid_api_key: {
+      status: 401,
+      body: {
+        msg: 'No, or invalid API key found in request',
+        code: 'BadApiKey',
+        params: {
+          ip: '45.141.123.17',
+          endpoint: '/api/users/update'
+        }
+      }.to_json
+    },
+    invalid_keys: {
+      status: 400,
+      body: {
+        msg: 'Invalid userId',
+        code: 'InvalidUserIdError',
+        params: {
+          ip: '45.141.123.17',
+          endpoint: '/api/users/update'
+        }
+      }.to_json
+    }
+  }
+}
+
+# Create user: success
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update").with { |request|
+  body = JSON.parse(request.body)
+  headers = request.headers
+
+  contain_api_key_in_headers?(headers) &&
+    contain_mandatory_keys?(body, create_or_update_user) &&
+    contain_valid_keys?(body, create_or_update_user)
+}.to_return(create_or_update_user[:responses][:success])
+
+# Create user: invalid keys
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update")
+       .with { |request| !contain_valid_keys?(JSON.parse(request.body), create_or_update_user) }
+       .to_return(create_or_update_user[:responses][:invalid_keys])
+
+# Create user: empty body
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update").with { |request|
+  body = request.body
+  body.empty? || JSON.parse(request.body).empty?
+}.to_return(create_or_update_user[:responses][:invalid_keys])
+
+# Create user: invalid api key
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update")
+       .with { |request| !contain_api_key_in_headers?(request.headers) }
+       .to_return(create_or_update_user[:responses][:invalid_api_key])
+
+################################################################################
+
 # rubocop:enable Style/BlockDelimiters
