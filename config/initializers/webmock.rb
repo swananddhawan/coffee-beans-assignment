@@ -19,7 +19,6 @@ track_event = {
   responses: {
     success: {
       status: 200,
-      headers: { content_type: 'application/json' },
       body: {
         msg: '',
         code: 'Success',
@@ -28,7 +27,6 @@ track_event = {
     },
     invalid_api_key: {
       status: 401,
-      headers: { content_type: 'application/json' },
       body: {
         msg: 'No, or invalid API key found in request',
         code: 'BadApiKey',
@@ -40,10 +38,9 @@ track_event = {
     },
     invalid_keys: {
       status: 400,
-      headers: { content_type: 'application/json' },
       body: {
         msg: 'Invalid keys',
-        code: 'BadApiKey',
+        code: 'InvalidKey',
         params: {
           ip: '45.141.123.17',
           endpoint: '/api/events/track'
