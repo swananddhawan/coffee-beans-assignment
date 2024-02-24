@@ -143,7 +143,7 @@ create_or_update_user = {
       }.to_json
     }
   }
-}
+}.freeze
 
 # Create user: success
 WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update").with { |request|
