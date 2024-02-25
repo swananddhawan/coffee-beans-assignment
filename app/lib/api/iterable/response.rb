@@ -11,7 +11,7 @@ module Api
 
       def initialize(httparty_response)
         @httparty_response = httparty_response
-        @parsed_response = JSON.parse(httparty_response, symbolize_names: true)
+        @parsed_response = JSON.parse(httparty_response.body, symbolize_names: true)
         @headers = httparty_response.headers
         @http_code = httparty_response.code
         @iterable_code = parsed_response[:code]
