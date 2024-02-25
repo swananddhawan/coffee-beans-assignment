@@ -7,7 +7,7 @@ require 'webmock'
 WebMock.enable!
 
 ITERABLE_BASE_URI = 'https://api.iterable.com'
-ITERABLE_API_KEY = 'iterable_api_key'
+ITERABLE_API_KEY = 'iterable_api_key'.freeze
 ITERABLE_MANDATORY_HEADERS = {
   'X-Api-Key' => ITERABLE_API_KEY
 }.freeze
