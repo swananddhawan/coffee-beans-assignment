@@ -1,6 +1,6 @@
 class UserEngagementService
   module EventPublishers
-    class Iterable
+    class Iterable < Base
       def publish_event!(event_to_publish)
         return if event_to_publish.published?
 
