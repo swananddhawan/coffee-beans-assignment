@@ -9,7 +9,7 @@ module Api
         user_engagement_service = UserEngagementService.new(current_user_id)
         user_engagement_service.track_event!(event_params[:name],
                                              current_time,
-                                             event_params[:data_fields])
+                                             event_params[:data_fields].to_h)
 
         render status: :ok, json: { data: {}, errors: nil, message: 'Event received.' }
       end
@@ -17,7 +17,7 @@ module Api
       private
 
       def event_params
-        params.permit!(:event)
+        params.require(:event).permit!
       end
     end
   end
