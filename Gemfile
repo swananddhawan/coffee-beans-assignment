@@ -55,6 +55,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'annotate', '~> 3.2.0'
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
+  gem 'factory_bot_rails', '~> 6.4'
   gem 'pry'
   gem 'rspec-rails', '~> 6.1', '>= 6.1.1'
   gem 'rubocop', '~> 1.60.0'
@@ -77,7 +78,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 5.3.0'
   gem 'vcr', '~> 6.2'
 end
 
-gem "sidekiq", "~> 7.2"
+gem 'sidekiq', '~> 7.2'
