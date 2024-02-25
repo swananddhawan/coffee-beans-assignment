@@ -42,7 +42,7 @@ class UserEngagementService
   end
 
   def validate_event_name!(event_name)
-    return if event_name.in?(self.class.valid_event_names) # TODO: add it in model
+    return if event_name.in?(self.class.valid_event_names)
 
     raise Errors::Event::InvalidEventAttributes, 'event_name', event_name
   end
