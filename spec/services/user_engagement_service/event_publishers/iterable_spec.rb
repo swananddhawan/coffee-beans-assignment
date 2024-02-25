@@ -66,10 +66,10 @@ RSpec.describe UserEngagementService::EventPublishers::Iterable, :vcr do
     end
   end
 
-  describe '#publisher_name' do
+  describe '#platform' do
     it 'returns "Iterable"' do
       iterable_publisher = described_class.new
-      expect(iterable_publisher.publisher_name).to eq('Iterable')
+      expect(iterable_publisher.platform).to eq('Iterable')
     end
   end
 end

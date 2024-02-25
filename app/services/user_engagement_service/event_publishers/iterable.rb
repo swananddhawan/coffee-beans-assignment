@@ -13,7 +13,7 @@ class UserEngagementService
         capture_api_response_details!(event_to_publish, response)
       end
 
-      def publisher_name
+      def platform
         'Iterable'
       end
 
