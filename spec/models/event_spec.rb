@@ -21,5 +21,24 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:name) }
+
+    it 'validates inclusion of name in valid event names' do
+      valid_event_names = UserEngagementService.valid_event_names
+
+      valid_event_names.each do |event_name|
+        event = build(:event, name: event_name)
+        expect(event).to be_valid
+      end
+
+      event = build(:event, name: 'invalid_name')
+      expect(event).not_to be_valid
+    end
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:published_events).dependent(:destroy) }
+  end
 end
