@@ -35,7 +35,6 @@ RSpec.describe Api::Iterable::Base, :vcr do
       allow(Api::Iterable::Response).to receive(:new).and_return(nil)
 
       expect(mocked_subject_class).to receive(:post).with(path,
-                                                          headers: expected_headers,
                                                           body: body_with_camelcase_keys.to_json)
       subject.send(:post_call!, path, body)
     end

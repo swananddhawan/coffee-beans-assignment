@@ -21,7 +21,6 @@ RSpec.describe UserEngagementServiceJobs::CaptureEventJob, type: :job do
       expect(new_event.name).to eq(event_name)
       expect(new_event.created_at).to eq(Time.zone.parse(created_at_string))
       expect(new_event.other_fields).to eq(data_fields.stringify_keys)
-
     end
 
     it 'en-queues event publisher jobs' do
