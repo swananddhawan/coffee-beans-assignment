@@ -19,6 +19,12 @@ RSpec.describe UserEngagementService do
     end
   end
 
+  describe '.emailable_events' do
+    it 'returns an array of events eligible for emails' do
+      expect(described_class.emailable_events).to contain_exactly('Clicked button B')
+    end
+  end
+
   describe '#initialize' do
     let(:user_id) { Faker::Internet.uuid }
 
