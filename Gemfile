@@ -79,3 +79,5 @@ group :test do
   gem 'selenium-webdriver'
   gem 'vcr', '~> 6.2'
 end
+
+gem "sidekiq", "~> 7.2"
