@@ -3,12 +3,11 @@ module Api
     class Base
       include HTTParty
 
-      base_uri ITERABLE_BASE_URI
+      base_uri 'https://api.iterable.com'
 
       raise_on [400, 401, 429, 500, 503]
 
-      # TODO: move key to env/secret
-      headers 'Content-Type' => 'application/json', 'X-Api-Key' => ITERABLE_API_KEY
+      headers 'Content-Type' => 'application/json', 'X-Api-Key' => ENV['ITERABLE_API_KEY']
 
       private
 

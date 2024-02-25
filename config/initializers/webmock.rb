@@ -6,11 +6,7 @@ require 'webmock'
 
 WebMock.enable!
 
-ITERABLE_BASE_URI = 'https://api.iterable.com'
-ITERABLE_API_KEY = 'iterable_api_key'.freeze
-ITERABLE_MANDATORY_HEADERS = {
-  'X-Api-Key' => ITERABLE_API_KEY
-}.freeze
+iterable_base_uri = 'https://api.iterable.com'
 
 def contain_mandatory_keys?(body, optional_and_mandatory_keys)
   mandatory_keys = optional_and_mandatory_keys[:keys][:mandatory]
@@ -26,7 +22,9 @@ def contain_valid_keys?(body, optional_and_mandatory_keys)
 end
 
 def contain_api_key_in_headers?(headers)
-  ITERABLE_MANDATORY_HEADERS.all? { |k, v| headers.key?(k) && headers[k] == v }
+  {
+    'X-Api-Key' => ENV['ITERABLE_API_KEY']
+  }.all? { |k, v| headers.key?(k) && headers[k] == v }
 end
 
 ################################################################################
@@ -75,7 +73,7 @@ track_event = {
 }.freeze
 
 # Track event: success
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track").with { |request|
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/events/track").with { |request|
   body = JSON.parse(request.body)
   headers = request.headers
 
@@ -85,18 +83,18 @@ WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track").with { |req
 }.to_return(track_event[:responses][:success])
 
 # Track event: invalid keys
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track")
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/events/track")
        .with { |request| !contain_valid_keys?(JSON.parse(request.body), track_event) }
        .to_return(track_event[:responses][:invalid_keys])
 
 # Track event: empty body
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track").with { |request|
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/events/track").with { |request|
   body = request.body
   body.empty? || JSON.parse(request.body).empty?
 }.to_return(track_event[:responses][:invalid_keys])
 
 # Track event: invalid api key
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/events/track")
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/events/track")
        .with { |request| !contain_api_key_in_headers?(request.headers) }
        .to_return(track_event[:responses][:invalid_api_key])
 
@@ -146,7 +144,7 @@ create_or_update_user = {
 }.freeze
 
 # Create user: success
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update").with { |request|
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/users/update").with { |request|
   body = JSON.parse(request.body)
   headers = request.headers
 
@@ -156,18 +154,18 @@ WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update").with { |req
 }.to_return(create_or_update_user[:responses][:success])
 
 # Create user: invalid keys
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update")
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/users/update")
        .with { |request| !contain_valid_keys?(JSON.parse(request.body), create_or_update_user) }
        .to_return(create_or_update_user[:responses][:invalid_keys])
 
 # Create user: empty body
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update").with { |request|
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/users/update").with { |request|
   body = request.body
   body.empty? || JSON.parse(request.body).empty?
 }.to_return(create_or_update_user[:responses][:invalid_keys])
 
 # Create user: invalid api key
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update")
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/users/update")
        .with { |request| !contain_api_key_in_headers?(request.headers) }
        .to_return(create_or_update_user[:responses][:invalid_api_key])
 
@@ -217,7 +215,7 @@ send_email = {
 }.freeze
 
 # Create user: success
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target").with { |request|
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/email/target").with { |request|
   body = JSON.parse(request.body)
   headers = request.headers
 
@@ -227,18 +225,18 @@ WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target").with { |req
 }.to_return(send_email[:responses][:success])
 
 # Create user: invalid keys
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target")
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/email/target")
        .with { |request| !contain_valid_keys?(JSON.parse(request.body), send_email) }
        .to_return(send_email[:responses][:invalid_keys])
 
 # Create user: empty body
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target").with { |request|
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/email/target").with { |request|
   body = request.body
   body.empty? || JSON.parse(request.body).empty?
 }.to_return(send_email[:responses][:invalid_keys])
 
 # Create user: invalid api key
-WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target")
+WebMock.stub_request(:post, "#{iterable_base_uri}/api/email/target")
        .with { |request| !contain_api_key_in_headers?(request.headers) }
        .to_return(send_email[:responses][:invalid_api_key])
 
