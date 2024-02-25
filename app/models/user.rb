@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -19,17 +21,17 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true,
-            uniqueness: true,
-            format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "Invalid email format" }
+                    uniqueness: true,
+                    format: URI::MailTo::EMAIL_REGEXP
 
   has_many :events, dependent: :destroy
 
   private
 
   def clean_and_sanitize_fields
-    self.first_name = self.first_name.strip
-    self.last_name = self.last_name.strip
+    self.first_name = first_name.to_s.strip
+    self.last_name = last_name.to_s.strip
 
-    self.email = self.email.strip.downcase
+    self.email = email.to_s.strip.downcase
   end
 end
