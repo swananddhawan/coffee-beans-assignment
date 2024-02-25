@@ -2,6 +2,11 @@
 
 class UserEngagementService
   class << self
+    EVENTS = {
+      clicked_button_a: 'Clicked button A',
+      clicked_button_b: 'Clicked button B'
+    }.freeze
+
     def external_event_publishers
       [
         EventPublishers::Iterable
@@ -10,8 +15,8 @@ class UserEngagementService
 
     def valid_event_names
       [
-        'Clicked button A',
-        'Clicked button B'
+        EVENTS[:clicked_button_a],
+        EVENTS[:clicked_button_b]
       ]
     end
 
