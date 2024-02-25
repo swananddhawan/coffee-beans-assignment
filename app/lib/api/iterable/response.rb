@@ -18,6 +18,10 @@ module Api
         @iterable_message = parsed_response[:msg]
         @iterable_params = parsed_response[:params].to_h # For nil responses
       end
+
+      def success?
+        http_code == 200
+      end
     end
   end
 end
