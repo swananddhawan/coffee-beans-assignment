@@ -51,6 +51,24 @@ RSpec.describe UserEngagementService::EventPublishers::Base do
     end
   end
 
+  describe '#send_email_for_event_id?' do
+    it 'raises NotImplementedError' do
+      publisher = described_class.new
+      expect {
+        publisher.send_email_for_event_id?(Faker::Internet.uuid)
+      }.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe '#send_email_for_event_id!' do
+    it 'raises NotImplementedError' do
+      publisher = described_class.new
+      expect {
+        publisher.send_email_for_event_id!(Faker::Internet.uuid)
+      }.to raise_error(NotImplementedError)
+    end
+  end
+
   describe '#platform' do
     it 'raises NotImplementedError' do
       publisher = described_class.new
