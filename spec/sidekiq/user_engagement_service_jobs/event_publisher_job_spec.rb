@@ -13,12 +13,41 @@ RSpec.describe UserEngagementServiceJobs::EventPublisherJob, type: :job do
       allow(event_publisher).to receive(:publish_event!)
     end
 
-    it 'creates a new published event and publishes it' do
-      expect(event_publisher_class.constantize).to receive(:new)
-      expect(event_publisher).to receive(:create_published_event!).with(event.id).and_return(event_to_publish)
-      expect(event_publisher).to receive(:publish_event!).with(event_to_publish)
+    # it 'creates a new published event and publishes it' do
+    #   expect(event_publisher_class.constantize).to receive(:new)
+    #   expect(event_publisher).to receive(:create_published_event!).with(event.id).and_return(event_to_publish)
+    #   expect(event_publisher).to receive(:publish_event!).with(event_to_publish)
 
-      described_class.new.perform(event_publisher_class, event.id)
+    #   described_class.new.perform(event_publisher_class, event.id)
+    # end
+
+    context 'when email needs to be sent for the event' do
+      before do
+        allow(event_publisher).to receive(:send_email_for_event_id?).with(event.id).and_return(true)
+        allow(event_publisher).to receive(:send_email_for_event_id!).with(event.id)
+      end
+
+      it 'creates and publishes the event and sends an email' do
+        expect(event_publisher).to receive(:create_published_event!).with(event.id).and_return(event_to_publish)
+        expect(event_publisher).to receive(:publish_event!).with(event_to_publish)
+        expect(event_publisher).to receive(:send_email_for_event_id!).with(event.id)
+
+        described_class.new.perform(event_publisher_class, event.id)
+      end
+    end
+
+    context 'when email does not need to be sent for the event' do
+      before do
+        allow(event_publisher).to receive(:send_email_for_event_id?).with(event.id).and_return(false)
+      end
+
+      it 'creates and publishes the event' do
+        expect(event_publisher).to receive(:create_published_event!).with(event.id).and_return(event_to_publish)
+        expect(event_publisher).to receive(:publish_event!).with(event_to_publish)
+        expect(event_publisher).not_to receive(:send_email_for_event_id!)
+
+        described_class.new.perform(event_publisher_class, event.id)
+      end
     end
   end
 end
