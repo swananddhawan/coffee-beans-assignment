@@ -10,7 +10,7 @@ module UserEngagementServiceJobs
                             created_at: Time.zone.parse(created_at_string),
                             other_fields: data_fields)
 
-      event.class.publishers.each do |publisher|
+      UserEngagementService.external_event_publishers.each do |publisher|
         UserEngagementServiceJobs::EventPublisherJob.perform_async(publisher.name, event.id)
       end
     end
