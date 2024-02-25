@@ -44,12 +44,12 @@ class UserEngagementService
   def validate_event_name!(event_name)
     return if event_name.in?(self.class.valid_event_names)
 
-    raise Errors::Event::InvalidEventAttributes, 'event_name', event_name
+    raise Errors::InvalidEventAttributes.new('event_name', event_name)
   end
 
   def validate_created_at!(created_at)
     return if created_at.past?
 
-    raise Errors::Event::InvalidEventAttributes, 'created_at', created_at
+    raise Errors::InvalidEventAttributes.new('created_at', created_at)
   end
 end
