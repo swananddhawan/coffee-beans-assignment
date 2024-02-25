@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  skip_before_action :verify_authenticity_token
+
   rescue_from ActionController::ParameterMissing do |exception|
     render status: :bad_request,
            json: exception_response(exception)
