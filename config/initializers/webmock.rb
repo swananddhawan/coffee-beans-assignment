@@ -37,8 +37,8 @@ end
 
 track_event = {
   keys: {
-    mandatory: ['eventName'],
-    optional: %w[email userId id createdAt dataFields campaignId templateId createNewFields]
+    mandatory: %w[eventName userId],
+    optional: %w[id createdAt dataFields campaignId templateId createNewFields]
   },
   responses: {
     success: {
