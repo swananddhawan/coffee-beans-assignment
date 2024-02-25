@@ -2,9 +2,14 @@
 
 class UserEngagementService
   class << self
+    # TODO: see if you can use symbols for event names
     EVENTS = {
       clicked_button_a: 'Clicked button A',
       clicked_button_b: 'Clicked button B'
+    }.freeze
+
+    EVENT_CAMPAIGN_MAPPING = {
+      'Clicked button B' => 1
     }.freeze
 
     def external_event_publishers
@@ -25,8 +30,13 @@ class UserEngagementService
         'Iterable'
       ]
     end
-  end
 
+    def emailable_events
+      [
+        EVENTS[:clicked_button_b]
+      ]
+    end
+  end
 
   attr_reader :user_id
 

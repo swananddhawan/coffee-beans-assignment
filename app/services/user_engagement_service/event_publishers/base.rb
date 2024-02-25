@@ -15,6 +15,16 @@ class UserEngagementService
         raise NotImplementedError
       end
 
+      # Override this method to implement the condition of whether to send email via this platform.
+      # `event_id` is a `id` of `Event` model.
+      def send_email_for_event_id?(event_id)
+        raise NotImplementedError
+      end
+
+      def send_email_for_event_id!(event_id)
+        raise NotImplementedError
+      end
+
       private
 
       # Override this method to return platform name as a String.

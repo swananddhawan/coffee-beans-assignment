@@ -1,7 +1,7 @@
 # Assumptions
 1. API will always send a non-empty JSON request body to iterable.com.
 2. Our project is ![UserID-based project](https://support.iterable.com/hc/en-us/articles/204780579-API-Overview-and-Sample-Payloads#identifying-users), hence we will always work with `userId` and not `email`.
-
+3. TODO: Number of events >>> actions to be performed on events
 # README
 
 This README would normally document whatever steps are necessary to get the
