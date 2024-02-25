@@ -173,4 +173,76 @@ WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update")
 
 ################################################################################
 
+#########
+# EMAIL #
+#########
+
+send_email = {
+  keys: {
+    mandatory: %w[userId campaignId],
+    optional: %w[recipientUserId dataFields sendAt allowRepeatMarketingSends metadata]
+  },
+  responses: {
+    success: {
+      status: 200,
+      body: {
+        msg: '',
+        code: 'Success',
+        params: nil
+      }.to_json
+    },
+    invalid_api_key: {
+      status: 401,
+      body: {
+        msg: 'No, or invalid API key found in request',
+        code: 'BadApiKey',
+        params: {
+          ip: '45.141.123.17',
+          endpoint: '/api/email/target'
+        }
+      }.to_json
+    },
+    invalid_keys: {
+      status: 400,
+      body: {
+        msg: 'Invalid userId',
+        code: 'InvalidUserIdError',
+        params: {
+          ip: '45.141.123.17',
+          endpoint: '/api/email/target'
+        }
+      }.to_json
+    }
+  }
+}.freeze
+
+# Create user: success
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target").with { |request|
+  body = JSON.parse(request.body)
+  headers = request.headers
+
+  contain_api_key_in_headers?(headers) &&
+    contain_mandatory_keys?(body, send_email) &&
+    contain_valid_keys?(body, send_email)
+}.to_return(send_email[:responses][:success])
+
+# Create user: invalid keys
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target")
+       .with { |request| !contain_valid_keys?(JSON.parse(request.body), send_email) }
+       .to_return(send_email[:responses][:invalid_keys])
+
+# Create user: empty body
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target").with { |request|
+  body = request.body
+  body.empty? || JSON.parse(request.body).empty?
+}.to_return(send_email[:responses][:invalid_keys])
+
+# Create user: invalid api key
+WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/email/target")
+       .with { |request| !contain_api_key_in_headers?(request.headers) }
+       .to_return(send_email[:responses][:invalid_api_key])
+
+################################################################################
+
+
 # rubocop:enable Style/BlockDelimiters
