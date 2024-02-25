@@ -81,6 +81,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.3.0'
   gem 'vcr', '~> 6.2'
+
+  gem 'timecop', '~> 0.9.8'
 end
 
 gem 'sidekiq', '~> 7.2'
