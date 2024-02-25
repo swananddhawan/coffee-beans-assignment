@@ -22,5 +22,23 @@
 require 'rails_helper'
 
 RSpec.describe PublishedEvent, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it { is_expected.to validate_inclusion_of(:platform).in_array(UserEngagementService.valid_platforms) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:event) }
+  end
+
+  describe '#published?' do
+    it 'returns true if published_at is present' do
+      published_event = build(:published_event, published_at: Time.current)
+      expect(published_event.published?).to eq(true)
+    end
+
+    it 'returns false if published_at is nil' do
+      published_event = build(:published_event, published_at: nil)
+      expect(published_event.published?).to eq(false)
+    end
+  end
 end
