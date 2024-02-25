@@ -116,6 +116,8 @@ GEM
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
+    faker (3.2.3)
+      i18n (>= 1.8.11, < 2)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashdiff (1.1.0)
@@ -332,6 +334,7 @@ DEPENDENCIES
   capybara
   debug
   factory_bot_rails (~> 6.4)
+  faker (~> 3.2, >= 3.2.3)
   httparty (~> 0.21.0)
   importmap-rails
   jbuilder

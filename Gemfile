@@ -56,6 +56,7 @@ group :development, :test do
   gem 'annotate', '~> 3.2.0'
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'factory_bot_rails', '~> 6.4'
+  gem 'faker', '~> 3.2', '>= 3.2.3'
   gem 'pry'
   gem 'rspec-rails', '~> 6.1', '>= 6.1.1'
   gem 'rubocop', '~> 1.60.0'
