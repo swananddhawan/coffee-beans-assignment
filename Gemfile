@@ -52,6 +52,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'webmock', '~> 3.22.0'
 
 group :development, :test do
+  gem 'dotenv', '~> 3.0', '>= 3.0.2'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'annotate', '~> 3.2.0'
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
