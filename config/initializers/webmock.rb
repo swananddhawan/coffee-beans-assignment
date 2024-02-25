@@ -179,8 +179,8 @@ WebMock.stub_request(:post, "#{ITERABLE_BASE_URI}/api/users/update")
 
 send_email = {
   keys: {
-    mandatory: %w[userId campaignId],
-    optional: %w[recipientUserId dataFields sendAt allowRepeatMarketingSends metadata]
+    mandatory: %w[recipientUserId campaignId],
+    optional: %w[dataFields sendAt allowRepeatMarketingSends metadata]
   },
   responses: {
     success: {
