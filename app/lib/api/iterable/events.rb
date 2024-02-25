@@ -1,7 +1,7 @@
 module Api
   module Iterable
     class Events < Base
-      def track_event(name, user_id, attributes = {})
+      def track_event!(name, user_id, attributes = {})
         attributes[:event_name] = name
         attributes[:user_id] = user_id
 
