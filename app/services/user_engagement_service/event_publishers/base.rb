@@ -3,7 +3,7 @@ class UserEngagementService
     class Base
       def create_published_event!(event_id)
         event_to_publish = PublishedEvent.find_or_initialize_by(event_id: event_id)
-        event_to_publish.platform = publisher_name
+        event_to_publish.platform = platform
         event_to_publish.save!
 
         event_to_publish
