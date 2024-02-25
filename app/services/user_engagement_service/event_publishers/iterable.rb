@@ -2,6 +2,7 @@ class UserEngagementService
   module EventPublishers
     class Iterable < Base
       def publish_event!(event_to_publish)
+        # TODO: publish only if event is of `type B`
         return if event_to_publish.published?
 
         event = event_to_publish.event
