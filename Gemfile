@@ -56,6 +56,7 @@ group :development, :test do
   gem 'annotate', '~> 3.2.0'
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
   gem 'pry'
+  gem 'rspec-rails', '~> 6.1', '>= 6.1.1'
   gem 'rubocop', '~> 1.60.0'
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
