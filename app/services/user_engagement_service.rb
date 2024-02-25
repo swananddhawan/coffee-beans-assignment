@@ -48,7 +48,7 @@ class UserEngagementService
   end
 
   def validate_created_at!(created_at)
-    return if created_at <= Time.zone.now
+    return if created_at.past?
 
     raise Errors::Event::InvalidEventAttributes, 'created_at', created_at
   end
