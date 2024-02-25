@@ -12,7 +12,6 @@ class UserEngagementService
   }.freeze
 
   class << self
-    # TODO: see if you can use symbols for event names
     def external_event_publishers
       [
         EventPublishers::Iterable
