@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe UserEngagementService::EventPublishers::Iterable, :vcr do
+  let(:iterable_publisher) { described_class.new }
+
   describe '#publish_event!' do
-    let(:iterable_publisher) { described_class.new }
 
     let(:event) { create(:event) }
     let(:event_to_publish) { create(:published_event, event: event) }
@@ -63,6 +64,58 @@ RSpec.describe UserEngagementService::EventPublishers::Iterable, :vcr do
         expect(events_api).not_to receive(:track_event!)
         iterable_publisher.publish_event!(event_to_publish)
       end
+    end
+  end
+
+  describe '#send_email_for_event_id?' do
+    context 'when the event is found and is emailable' do
+      let(:event) { create(:event, name: UserEngagementService.emailable_events.sample) }
+
+      it 'returns true' do
+        expect(iterable_publisher.send_email_for_event_id?(event.id)).to be_truthy
+      end
+    end
+
+    context 'when the event is not found' do
+      it 'returns false' do
+        expect(iterable_publisher.send_email_for_event_id?(Faker::Internet.uuid)).to be_falsey
+      end
+    end
+
+    context 'when the event is found but not emailable' do
+      let(:event) { create(:event, name: 'Clicked button A') }
+
+      it 'returns false' do
+        expect(iterable_publisher.send_email_for_event_id?(event.id)).to be_falsey
+      end
+    end
+  end
+
+  describe '#send_email_for_event_id!' do
+    let(:user) { create(:user) }
+    let(:event) { create(:event, user: user) }
+    let(:email_api) { instance_double('Api::Iterable::Email') }
+
+    before do
+      Timecop.freeze
+      allow(Api::Iterable::Email).to receive(:new).and_return(email_api)
+      allow(email_api).to receive(:send_email!)
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it 'sends an email for the event' do
+      expect(email_api).to receive(:send_email!)
+                             .with(event.user_id,
+                                   UserEngagementService::EVENT_CAMPAIGN_MAPPING[event.name],
+                                   data_fields: {
+                                     event: event.other_fields,
+                                     user: user.as_json
+                                   })
+
+      iterable_publisher.send_email_for_event_id!(event.id)
     end
   end
 
