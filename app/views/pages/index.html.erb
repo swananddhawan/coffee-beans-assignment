@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Button Page</title>
+</head>
+<body>
+  <button id="buttonA">Button A</button>
+  <button id="buttonB">Button B</button>
+
+  <script>
+    function callApi(buttonName) {
+      fetch('/api/v1/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          {
+            event: {
+              name: 'Clicked button ' + buttonName
+            }
+          }
+        )
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('API response:', data);
+          // Handle the API response as needed
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    // Add event listeners to buttons
+    document.getElementById('buttonA').addEventListener('click', function() {
+      callApi('A');
+    });
+
+    document.getElementById('buttonB').addEventListener('click', function() {
+      callApi('B');
+    });
+
+  </script>
+</body>
+</html>
