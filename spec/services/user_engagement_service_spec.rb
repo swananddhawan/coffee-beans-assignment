@@ -9,7 +9,7 @@ RSpec.describe UserEngagementService do
 
   describe '.valid_event_names' do
     it 'returns an array of valid event names' do
-      expect(UserEngagementService.valid_event_names).to eq(['Clicked event A', 'Clicked event B'])
+      expect(UserEngagementService.valid_event_names).to eq(['Clicked button A', 'Clicked button B'])
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe UserEngagementService do
     let(:user_engagement_service) { UserEngagementService.new(user_id) }
 
     it 'calls UserEngagementServiceJobs::CaptureEventJob.perform_async with correct arguments' do
-      event_name = 'Clicked event A'
+      event_name = 'Clicked button A'
       created_at = Time.zone.now
       data_fields = { key: 'value' }
 
@@ -53,7 +53,7 @@ RSpec.describe UserEngagementService do
       future_time = Time.zone.now + 1.hour
 
       expect {
-        user_engagement_service.track_event!('Clicked event A', future_time, {})
+        user_engagement_service.track_event!('Clicked button A', future_time, {})
       }.to raise_error(UserEngagementService::Errors::InvalidEventAttributes, /created_at/)
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe UserEngagementService do
 
     it 'does not raise error if event name is valid' do
       expect {
-        user_engagement_service.send(:validate_event_name!, 'Clicked event A')
+        user_engagement_service.send(:validate_event_name!, 'Clicked button A')
       }.not_to raise_error
     end
 

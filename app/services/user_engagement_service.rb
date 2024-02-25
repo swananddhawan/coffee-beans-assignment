@@ -10,8 +10,8 @@ class UserEngagementService
 
     def valid_event_names
       [
-        'Clicked event A',
-        'Clicked event B'
+        'Clicked button A',
+        'Clicked button B'
       ]
     end
 
