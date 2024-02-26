@@ -2,6 +2,7 @@ module UserEngagementServiceJobs
   class EventPublisherJob
     include Sidekiq::Job
 
+    # Refer Assumption#3 in README.md for the reason to chose this approach.
     def perform(event_publisher_class, event_id)
       event_publisher = event_publisher_class.constantize.new
 
