@@ -52,10 +52,10 @@ bundle exec rspec spec/
 To add another external publisher, you need to do the following changes:
 1. Add the API library for the new service in the `app/lib/api/` directory. You can refer to the `app/lib/api/iterable` code.
 2. Add a new service class in `/app/services/user_engagement_service/event_publishers` directory and override the following methods as required:
-  1. `publish_event!`
-  2. `send_email_for_event_id?`
-  3. `send_email_for_event_id!`
-  4. `platform`
+    1. `publish_event!`
+    2. `send_email_for_event_id?`
+    3. `send_email_for_event_id!`
+    4. `platform`
 3. Add the name of the new class(created in the above step) to the `UserEngagementService.external_event_publishers` method.
 
 # Database schema
